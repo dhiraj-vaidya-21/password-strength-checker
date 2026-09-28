@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A college-level DSA project demonstrating password strength analysis using Data Structures and Algorithms including Stack, Searching, Sorting, Arrays, Sets, and String traversal.">
+    <meta name="keywords" content="DSA project, password strength checker, data structures, algorithms, stack, binary search, bubble sort, college project">
+    <meta name="author" content="DSA Academic Project">
+    <title>Password Strength Checker — DSA Project</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔐</text></svg>">
+</head>
+<body>
+
+<!-- ============================================================
+     ANIMATED BACKGROUND
+     ============================================================ -->
+<div class="bg-animated" aria-hidden="true">
+    <div class="bg-blob bg-blob-1"></div>
+    <div class="bg-blob bg-blob-2"></div>
+    <div class="bg-blob bg-blob-3"></div>
+    <div class="bg-grid"></div>
+</div>
+
+<!-- ============================================================
+     MAIN WRAPPER
+     ============================================================ -->
+<div class="main-wrapper">
+
+    <!-- ============================
+         HEADER
+         ============================ -->
+    <header class="header">
+        <div class="header-badge">
+            <span class="badge-dot"></span>
+            DSA Academic Project · College Level
+        </div>
+        <h1>🔐 Password Strength Checker</h1>
+        <p class="header-desc">
+            A complete implementation using <strong>Data Structures &amp; Algorithms</strong> —
+            Stack, Arrays, Sets, Searching, and Sorting applied to real-world password security.
+        </p>
+        <div class="header-tags">
+            <span class="tag">📚 Strings</span>
+            <span class="tag">📦 Arrays</span>
+            <span class="tag">🗄️ Hash Set</span>
+            <span class="tag">📚 Stack (LIFO)</span>
+            <span class="tag">🔍 Linear Search</span>
+            <span class="tag">🔎 Binary Search</span>
+            <span class="tag">🔄 Bubble Sort</span>
+            <span class="tag">🔃 Selection Sort</span>
+        </div>
+    </header>
+
+    <!-- ============================
+         SECURITY NOTICE
+         ============================ -->
+    <div class="security-notice" role="note" aria-label="Security notice">
+        <span class="sec-icon">🛡️</span>
+        <span>
+            <strong>100% Client-Side &amp; Secure:</strong>
+            Your password is processed entirely in your browser.
+            It is never stored, logged, or transmitted anywhere.
+        </span>
+    </div>
+
+    <!-- ============================
+         PASSWORD INPUT
+         ============================ -->
+    <section class="input-section card" aria-labelledby="input-title">
+        <div class="section-title" id="input-title">Enter Your Password</div>
+        <div class="input-wrapper">
+            <span class="password-icon" aria-hidden="true">🔑</span>
+            <input
+                type="password"
+                id="passwordInput"
+                placeholder="Type your password to analyze..."
+                autocomplete="new-password"
+                spellcheck="false"
+                aria-label="Password input for strength analysis"
+                aria-describedby="charCount"
+            >
+            <button id="toggleBtn" type="button" aria-label="Toggle password visibility">
+                <span class="eye-icon">👁️</span> Show
+            </button>
+        </div>
+        <p class="char-count" id="charCount" aria-live="polite">0 characters</p>
+    </section>
+
+    <!-- ============================
+         STRENGTH METER
+         ============================ -->
+    <section class="strength-section card" aria-labelledby="strength-title">
+        <div class="section-title" id="strength-title">Password Strength</div>
+        <div class="strength-header">
+            <span id="strengthLabel" class="strength-label" aria-live="polite">Enter a password</span>
+            <span id="scoreDisplay" aria-live="polite">0/10</span>
+        </div>
+        <div class="meter-track" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="10">
+            <div id="strengthBar"></div>
+        </div>
+        <div class="strength-levels" aria-hidden="true">
+            <span class="level-label">Very Weak</span>
+            <span class="level-label">Weak</span>
+            <span class="level-label">Medium</span>
+            <span class="level-label">Strong</span>
+            <span class="level-label">Very Strong</span>
+        </div>
+    </section>
+
+    <!-- ============================
+         REQUIREMENTS + SUGGESTIONS
+         ============================ -->
+    <div class="two-col">
+
+        <!-- Requirements Checklist -->
+        <section class="card" aria-labelledby="req-title">
+            <div class="section-title" id="req-title">📋 Password Requirements</div>
+            <ul id="requirementsList" role="list" aria-label="Password requirement checklist">
+                <li class="req-item neutral">Enter a password to see requirements</li>
+            </ul>
+        </section>
+
+        <!-- Improvement Suggestions -->
+        <section class="card" aria-labelledby="sug-title">
+            <div class="section-title" id="sug-title">💡 Improvement Suggestions</div>
+            <ul id="suggestionsList" role="list" aria-label="Password improvement suggestions">
+                <li class="suggestion-item neutral">Suggestions will appear here</li>
+            </ul>
+        </section>
+
+    </div>
+
+    <!-- ============================
+         DSA ANALYSIS TABS
+         ============================ -->
+    <section class="dsa-section" aria-labelledby="dsa-title">
+        <div class="card">
+            <div class="tab-content">
+                <div class="section-title" id="dsa-title">⚙️ DSA Analysis — Live Visualization</div>
+            </div>
+            <!-- Tab Buttons -->
+            <nav class="dsa-tabs" role="tablist" aria-label="DSA visualization tabs">
+                <button class="tab-btn active" role="tab" aria-selected="true"
+                        aria-controls="tab-char" id="btn-char"
+                        onclick="switchTab('char', this)">
+                    🔤 Char Traversal
+                </button>
+                <button class="tab-btn" role="tab" aria-selected="false"
+                        aria-controls="tab-stack" id="btn-stack"
+                        onclick="switchTab('stack', this)">
+                    📚 Stack
+                </button>
+                <button class="tab-btn" role="tab" aria-selected="false"
+                        aria-controls="tab-freq" id="btn-freq"
+                        onclick="switchTab('freq', this)">
+                    📊 Frequency Map
+                </button>
+                <button class="tab-btn" role="tab" aria-selected="false"
+                        aria-controls="tab-search" id="btn-search"
+                        onclick="switchTab('search', this)">
+                    🔍 Searching
+                </button>
+                <button class="tab-btn" role="tab" aria-selected="false"
+                        aria-controls="tab-sort" id="btn-sort"
+                        onclick="switchTab('sort', this)">
+                    🔃 Sorting
+                </button>
+                <button class="tab-btn" role="tab" aria-selected="false"
+                        aria-controls="tab-complexity" id="btn-complexity"
+                        onclick="switchTab('complexity', this)">
+                    ⏱ Complexity
+                </button>
+            </nav>
+
+            <div class="tab-content">
+                <!-- Tab: Character Traversal -->
+                <div class="tab-panel active" id="tab-char" role="tabpanel" aria-labelledby="btn-char">
+                    <p style="font-size:0.78rem;color:var(--text-muted);margin-bottom:12px;">
+                        <strong style="color:var(--accent-blue)">String Traversal O(n):</strong>
+                        Each character in the password is visited exactly once.
+                        Colors indicate character type: <span style="color:#38bdf8">■ Uppercase</span>
+                        <span style="color:#a78bfa">■ Lowercase</span>
+                        <span style="color:#34d399">■ Digit</span>
+                        <span style="color:#fbbf24">■ Special</span>
+                    </p>
+                    <div id="vizCharFlow">
+                        <p class="viz-empty">Waiting for input...</p>
+                    </div>
+                </div>
+
+                <!-- Tab: Stack -->
+                <div class="tab-panel" id="tab-stack" role="tabpanel" aria-labelledby="btn-stack">
+                    <p style="font-size:0.78rem;color:var(--text-muted);margin-bottom:12px;">
+                        <strong style="color:var(--accent-blue)">Stack (LIFO):</strong>
+                        Characters are pushed onto a Stack one by one.
+                        The Stack detects repeat character runs and same-type sequences.
+                        Operations: <code style="font-family:monospace;background:rgba(0,0,0,0.3);padding:1px 5px;border-radius:3px">push()</code>
+                        <code style="font-family:monospace;background:rgba(0,0,0,0.3);padding:1px 5px;border-radius:3px">pop()</code>
+                        <code style="font-family:monospace;background:rgba(0,0,0,0.3);padding:1px 5px;border-radius:3px">peek()</code>
+                        <code style="font-family:monospace;background:rgba(0,0,0,0.3);padding:1px 5px;border-radius:3px">isEmpty()</code>
+                    </p>
+                    <div id="vizStack">
+                        <p class="viz-empty">Stack visualization will appear here</p>
+                    </div>
+                </div>
+
+                <!-- Tab: Frequency Map -->
+                <div class="tab-panel" id="tab-freq" role="tabpanel" aria-labelledby="btn-freq">
+                    <p style="font-size:0.78rem;color:var(--text-muted);margin-bottom:12px;">
+                        <strong style="color:var(--accent-purple)">Character Frequency Map (Hashing):</strong>
+                        A JavaScript object acts as a hash map to count character occurrences.
+                        O(n) time to build, O(k) space for k unique characters.
+                    </p>
+                    <div id="vizFrequency">
+                        <p class="viz-empty">Frequency map will appear here</p>
+                    </div>
+                </div>
+
+                <!-- Tab: Searching -->
+                <div class="tab-panel" id="tab-search" role="tabpanel" aria-labelledby="btn-search">
+                    <p style="font-size:0.78rem;color:var(--text-muted);margin-bottom:12px;">
+                        <strong style="color:var(--accent-cyan)">Searching Algorithms:</strong>
+                        Three searches run simultaneously — Hash Set O(1), Binary Search O(log n),
+                        and Linear Search O(n·m·p) for weak-pattern detection.
+                    </p>
+                    <div id="vizSearch">
+                        <p class="viz-empty">Search results will appear here</p>
+                    </div>
+                </div>
+
+                <!-- Tab: Sorting -->
+                <div class="tab-panel" id="tab-sort" role="tabpanel" aria-labelledby="btn-sort">
+                    <p style="font-size:0.78rem;color:var(--text-muted);margin-bottom:12px;">
+                        <strong style="color:var(--accent-orange)">Sorting Algorithms:</strong>
+                        <strong>Bubble Sort</strong> orders rules by score (highest first).
+                        <strong>Selection Sort</strong> orders suggestions by priority.
+                        Both implemented manually without JS built-in sort().
+                    </p>
+                    <div id="vizSort">
+                        <p class="viz-empty">Sorting visualization will appear here</p>
+                    </div>
+                </div>
+
+                <!-- Tab: Complexity -->
+                <div class="tab-panel" id="tab-complexity" role="tabpanel" aria-labelledby="btn-complexity">
+                    <p style="font-size:0.78rem;color:var(--text-muted);margin-bottom:12px;">
+                        <strong style="color:var(--accent-cyan)">Time &amp; Space Complexity</strong>
+                        of each DSA component used in this project:
+                    </p>
+                    <div id="vizComplexity">
+                        <p class="viz-empty">Complexity analysis will appear here</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================
+         DSA CONCEPTS USED SECTION
+         ============================ -->
+    <section aria-labelledby="concepts-title">
+        <div class="section-title" id="concepts-title" style="padding:0 0 16px 0;">
+            🧠 DSA Concepts Implemented
+        </div>
+        <div class="dsa-concepts-grid">
+
+            <div class="dsa-concept-card" style="--card-accent: #38bdf8;">
+                <div class="concept-icon">🔤</div>
+                <div class="concept-name">Strings</div>
+                <div class="concept-use">Password treated as a character array. Traversed character-by-character for analysis.</div>
+                <div class="concept-complexity">Time: O(n) | Space: O(k)</div>
+            </div>
+
+            <div class="dsa-concept-card" style="--card-accent: #a78bfa;">
+                <div class="concept-icon">📦</div>
+                <div class="concept-name">Arrays</div>
+                <div class="concept-use">Common passwords list, weak patterns list, and rules stored as Arrays. Sorted array used for Binary Search.</div>
+                <div class="concept-complexity">Lookup: O(n) | Access: O(1)</div>
+            </div>
+
+            <div class="dsa-concept-card" style="--card-accent: #34d399;">
+                <div class="concept-icon">🗄️</div>
+                <div class="concept-name">Hash Set</div>
+                <div class="concept-use">JavaScript Set used as hash table for O(1) average common-password lookup. Demonstrates hashing concept.</div>
+                <div class="concept-complexity">Lookup: O(1) avg | Space: O(m)</div>
+            </div>
+
+            <div class="dsa-concept-card" style="--card-accent: #38bdf8;">
+                <div class="concept-icon">📚</div>
+                <div class="concept-name">Stack (LIFO)</div>
+                <div class="concept-use">Custom Stack class with push/pop/peek/isEmpty. Analyzes repeat-character runs and pattern depth.</div>
+                <div class="concept-complexity">All ops: O(1) | Space: O(n)</div>
+            </div>
+
+            <div class="dsa-concept-card" style="--card-accent: #22d3ee;">
+                <div class="concept-icon">🔍</div>
+                <div class="concept-name">Linear Search</div>
+                <div class="concept-use">Manually implemented to detect weak sub-patterns and sequential keyboard patterns inside the password.</div>
+                <div class="concept-complexity">Time: O(n·m·p) | Space: O(1)</div>
+            </div>
+
+            <div class="dsa-concept-card" style="--card-accent: #06b6d4;">
+                <div class="concept-icon">🔎</div>
+                <div class="concept-name">Binary Search</div>
+                <div class="concept-use">Applied on sorted common-password array. Halves search space each step — much faster than linear.</div>
+                <div class="concept-complexity">Time: O(log n) | Space: O(1)</div>
+            </div>
+
+            <div class="dsa-concept-card" style="--card-accent: #fb923c;">
+                <div class="concept-icon">🔄</div>
+                <div class="concept-name">Bubble Sort</div>
+                <div class="concept-use">Manually implemented to sort password rules by score in descending order. Shows each pass and swap count.</div>
+                <div class="concept-complexity">Time: O(n²) | Space: O(1)</div>
+            </div>
+
+            <div class="dsa-concept-card" style="--card-accent: #fbbf24;">
+                <div class="concept-icon">🔃</div>
+                <div class="concept-name">Selection Sort</div>
+                <div class="concept-use">Used to sort improvement suggestions by priority level. Finds the next best suggestion at each step.</div>
+                <div class="concept-complexity">Time: O(n²) | Space: O(1)</div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ============================
+         ALGORITHM FLOWCHART
+         ============================ -->
+    <section class="card about-section" aria-labelledby="flow-title">
+        <div class="section-title" id="flow-title">📊 Algorithm Flowchart</div>
+        <div class="flowchart" aria-label="Password analysis algorithm flowchart">
+            <div class="flow-step">
+                <div class="flow-box flow-start">START</div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-box flow-process">Enter Password (String Input)</div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-box flow-process">String Traversal — O(n) — Count char types</div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-box flow-process">Stack Analysis — Push each char, detect repeats</div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-box flow-process">Hash Set Lookup — O(1) — Common password check</div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-box flow-process">Binary Search — O(log n) — Sorted password list</div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-box flow-process">Linear Search — O(n·m·p) — Weak pattern detection</div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-box flow-process">Evaluate Rules — Score each requirement</div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-box flow-process">Bubble Sort — Sort rules by score</div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-box flow-process">Generate Suggestions → Selection Sort by priority</div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-box flow-output">Calculate Total Score → Determine Strength Level</div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-box flow-output">Display Result: Strength, Score, Checklist, Suggestions</div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-box flow-end">END</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================
+         ABOUT PROJECT SECTION
+         ============================ -->
+    <section class="card about-section" aria-labelledby="about-title">
+        <div class="section-title" id="about-title">📖 About This Project</div>
+        <div class="about-grid">
+            <div class="about-item">
+                <h4>Project Overview</h4>
+                <p>
+                    This is a college-level DSA project demonstrating how fundamental
+                    data structures and algorithms can be applied to solve a real-world
+                    security problem: evaluating password strength.
+                    The entire analysis runs client-side in the browser.
+                </p>
+            </div>
+            <div class="about-item">
+                <h4>Key Features</h4>
+                <ul>
+                    <li>Real-time password strength analysis</li>
+                    <li>7+ DSA concepts visibly implemented</li>
+                    <li>Live visualizations of each algorithm</li>
+                    <li>Time &amp; space complexity display</li>
+                    <li>Improvement suggestions sorted by priority</li>
+                    <li>Fully responsive, modern UI</li>
+                </ul>
+            </div>
+            <div class="about-item">
+                <h4>Strength Levels</h4>
+                <ul>
+                    <li>🔴 <strong>Very Weak</strong> — Score 0–2 or common password</li>
+                    <li>🟠 <strong>Weak</strong> — Score 3–4</li>
+                    <li>🟡 <strong>Medium</strong> — Score 5–6</li>
+                    <li>🟢 <strong>Strong</strong> — Score 7–8</li>
+                    <li>🔵 <strong>Very Strong</strong> — Score 9–10</li>
+                </ul>
+            </div>
+            <div class="about-item">
+                <h4>Technologies Used</h4>
+                <ul>
+                    <li>HTML5 — Semantic structure</li>
+                    <li>CSS3 — Glassmorphism, animations</li>
+                    <li>Vanilla JavaScript — All logic &amp; DSA</li>
+                    <li>No frameworks, no backend, no APIs</li>
+                    <li>Google Fonts (Inter, JetBrains Mono)</li>
+                </ul>
+            </div>
+        </div>
+        <div class="security-badge" role="status">
+            🛡️ Password never stored, logged, or transmitted · 100% Client-Side Processing
+        </div>
+    </section>
+
+    <!-- ============================
+         FOOTER
+         ============================ -->
+    <footer class="footer" role="contentinfo">
+        <p>
+            🔐 <strong>Password Strength Checker</strong> — DSA Academic Project |
+            Implementing <span>Stack, Arrays, Sets, Linear Search, Binary Search, Bubble Sort, Selection Sort</span>
+        </p>
+        <p style="margin-top:6px; font-size:0.7rem;">
+            Built with Vanilla HTML, CSS &amp; JavaScript · No backend · No data storage · Open Source
+        </p>
+    </footer>
+
+</div><!-- end .main-wrapper -->
+
+<!-- ============================================================
+     JavaScript: Load DSA Modules in Correct Order
+     1. stack.js         — Stack class + analyzeWithStack()
+     2. searching.js     — linearSearchPattern(), binarySearch(), detectSequentialPatterns()
+     3. sorting.js       — bubbleSort(), selectionSort(), sortRulesByScore(), sortSuggestionsByPriority()
+     4. passwordAnalyzer.js — analyzePassword() — uses all above
+     5. script.js        — UI controller
+     ============================================================ -->
+<script src="js/stack.js"></script>
+<script src="js/searching.js"></script>
+<script src="js/sorting.js"></script>
+<script src="js/passwordAnalyzer.js"></script>
+<script src="script.js"></script>
+
+<script>
+    // ============================================================
+    //  TAB SWITCHER (inline to keep modular JS clean)
+    // ============================================================
+    function switchTab(tabId, btn) {
+        // Deactivate all panels and buttons
+        document.querySelectorAll('.tab-panel').forEach(p => {
+            p.classList.remove('active');
+            p.setAttribute('aria-hidden', 'true');
+        });
+        document.querySelectorAll('.tab-btn').forEach(b => {
+            b.classList.remove('active');
+            b.setAttribute('aria-selected', 'false');
+        });
+
+        // Activate clicked tab
+        const panel = document.getElementById('tab-' + tabId);
+        if (panel) {
+            panel.classList.add('active');
+            panel.removeAttribute('aria-hidden');
+        }
+        if (btn) {
+            btn.classList.add('active');
+            btn.setAttribute('aria-selected', 'true');
+        }
+    }
+</script>
+
+</body>
+</html>
